@@ -55,7 +55,7 @@ fh.setFormatter(logging.Formatter(log_format))
 logging.getLogger().addHandler(fh)
 
 CLASSES = 365
-initGpu = 0
+initGpu = 2
 device_ids = [2,3]
 
 class CrossEntropyLabelSmooth(nn.Module):

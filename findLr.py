@@ -97,7 +97,7 @@ def find_lr(model, trn_loader, criterion, optimizer, init_value = 1e-8, final_va
         #Update the lr for the next step
         lr *= mult
         optimizer.param_groups[0]['lr'] = lr
-        print(log_lrs, losses, batch_num)
+        print(batch_num)
     return log_lrs, losses
 	
 

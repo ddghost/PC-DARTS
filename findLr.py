@@ -172,7 +172,7 @@ def main():
         pin_memory=True, 
         num_workers=args.workers)
   architect = Architect(model, args)
-  print(find_lr(model, trn_loader, criterion, optimizer) )
+  print(find_lr(model, train_queue, criterion, optimizer) )
 
 if __name__ == '__main__':
   main() 

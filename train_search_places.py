@@ -184,7 +184,7 @@ def train(train_queue, valid_queue, model, architect, criterion, optimizer, lr,e
       input_search = input_search.cuda(non_blocking=True)
       target_search = target_search.cuda(non_blocking=True)
       architect.step(input, target, input_search, target_search, lr, optimizer, unrolled=args.unrolled)
-
+      print(step)
     optimizer.zero_grad()
 
     logits = model(input)

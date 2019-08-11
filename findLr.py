@@ -14,8 +14,7 @@ import torch.nn.functional as F
 import torchvision.datasets as dset
 import torch.backends.cudnn as cudnn
 import torchvision.transforms as transforms
-
-
+import matplotlib.pyplot as plt
 from torch.autograd import Variable
 from model_search_imagenet import Network
 from architect import Architect
@@ -176,7 +175,9 @@ def main():
         pin_memory=True, 
         num_workers=args.workers)
   architect = Architect(model, args)
-  print(find_lr(model, train_queue, criterion, optimizer) )
+  logs,losses = find_lr(model, train_queue, criterion, optimizer)
+  plt.plot(logs[10:-5],losses[10:-5])
+  plt.savefig('fing.jpg')
 
 if __name__ == '__main__':
   main() 

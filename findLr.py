@@ -71,6 +71,7 @@ def find_lr(model, trn_loader, criterion, optimizer, init_value = 1e-8, final_va
     batch_num = 0
     losses = []
     log_lrs = []
+    print(num)
     for data in trn_loader:
         batch_num += 1
         #As before, get the loss for this mini-batch of inputs/outputs
@@ -97,6 +98,7 @@ def find_lr(model, trn_loader, criterion, optimizer, init_value = 1e-8, final_va
         #Update the lr for the next step
         lr *= mult
         optimizer.param_groups[0]['lr'] = lr
+        print(log_lrs, losses, batch_num)
     return log_lrs, losses
 	
 

@@ -179,12 +179,11 @@ def train(train_queue, valid_queue, model, architect, criterion, optimizer, lr,e
     #  valid_queue_iter = iter(valid_queue)
     #  input_search, target_search = next(valid_queue_iter)
 
-    if epoch>=0:
+    if epoch > 15:
       input_search, target_search = next(iter(valid_queue))
       input_search = input_search.cuda(non_blocking=True)
       target_search = target_search.cuda(non_blocking=True)
       architect.step(input, target, input_search, target_search, lr, optimizer, unrolled=args.unrolled)
-      print(step)
     optimizer.zero_grad()
 
     logits = model(input)
@@ -198,8 +197,7 @@ def train(train_queue, valid_queue, model, architect, criterion, optimizer, lr,e
     objs.update(loss.item(), n)
     top1.update(prec1.item(), n)
     top5.update(prec5.item(), n)
-#args.report_freq
-    if step % 1  == 0:
+    if step % args.report_freq  == 0:
       logging.info('train %03d %e %f %f', step, objs.avg, top1.avg, top5.avg)
 
   return top1.avg, objs.avg

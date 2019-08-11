@@ -78,7 +78,7 @@ def find_lr(model, trn_loader, criterion, optimizer, init_value = 1e-8, final_va
         outputs = model(inputs)
         loss = criterion(outputs, labels)
         #Compute the smoothed loss
-        avg_loss = beta * avg_loss + (1-beta) *loss.data[0]
+        avg_loss = beta * avg_loss + (1-beta) *loss.item()
         smoothed_loss = avg_loss / (1 - beta**batch_num)
         #Stop if the loss is exploding
         if batch_num > 1 and smoothed_loss > 4 * best_loss:

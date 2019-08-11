@@ -56,8 +56,8 @@ logging.getLogger().addHandler(fh)
 
 
 CLASSES = 365
-initGpu = 2
-device_ids = [2]
+initGpu = 0
+device_ids = [0]
 
 def main():
   if not torch.cuda.is_available():

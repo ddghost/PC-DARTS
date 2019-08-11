@@ -23,7 +23,7 @@ parser = argparse.ArgumentParser("places")
 parser.add_argument('--workers', type=int, default=8, help='number of workers to load dataset')
 parser.add_argument('--batch_size', type=int, default=128, help='batch size')
 parser.add_argument('--learning_rate', type=float, default=0.5, help='init learning rate')
-parser.add_argument('--learning_rate_min', type=float, default=0.0001, help='min learning rate')
+parser.add_argument('--learning_rate_min', type=float, default=0.005, help='min learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
 parser.add_argument('--weight_decay', type=float, default=3e-5, help='weight decay')
 parser.add_argument('--report_freq', type=float, default=100, help='report frequency')
@@ -151,7 +151,7 @@ def main():
 
     # training
     train_acc, train_obj = train(train_queue, valid_queue, model, architect, criterion, optimizer, lr,epoch)
-    logging.info('train_acc %f, train_loss %f', train_acc, train_obj)
+    logging.info('train_acc %f', train_acc)
 
     # validation
     if args.epochs-epoch<=1:

@@ -56,7 +56,7 @@ logging.getLogger().addHandler(fh)
 
 
 CLASSES = 365
-initGpu = 2
+initGpu = 3
 #device_ids = [2]
 
 def main():

@@ -57,7 +57,7 @@ logging.getLogger().addHandler(fh)
 
 CLASSES = 365
 initGpu = 2
-device_ids = [2]
+#device_ids = [2]
 
 def main():
   if not torch.cuda.is_available():
@@ -77,7 +77,7 @@ def main():
   criterion = criterion.cuda()
   model = Network(args.init_channels, CLASSES, args.layers, criterion)
   torch.cuda.set_device(initGpu)
-  model = nn.DataParallel(model, device_ids)
+  #model = nn.DataParallel(model, device_ids)
   model = model.cuda()
   logging.info("param size = %fMB", utils.count_parameters_in_MB(model))
 
@@ -92,9 +92,7 @@ def main():
   traindir = os.path.join(data_dir, 'train')
   validdir = os.path.join(data_dir, 'val')
   normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-  train_data = dset.ImageFolder(
-        traindir,
-        transforms.Compose([
+  imgTransform = transforms.Compose([
             transforms.RandomResizedCrop(224),
             transforms.RandomHorizontalFlip(),
             transforms.ColorJitter(
@@ -104,30 +102,27 @@ def main():
                 hue=0.2),
             transforms.ToTensor(),
             normalize,
-        ]))
+        ])
+
+  train_data = dset.ImageFolder(
+        traindir,
+        imgTransform)
 
   valid_data = dset.ImageFolder(
         validdir,
-        transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            normalize,
-        ]))
+        imgTransform)
 
   num_train = len(train_data)
-  indices = list(range(num_train))
-  split = int(np.floor(0.5 * num_train))
 
   train_queue = torch.utils.data.DataLoader(
         train_data, batch_size=args.batch_size,
-        sampler=torch.utils.data.sampler.SubsetRandomSampler(indices[:split]),
+        shuffle=True,
         pin_memory=True,
         num_workers=args.workers)
 
   valid_queue = torch.utils.data.DataLoader(
-        train_data, batch_size=args.batch_size,
-        sampler=torch.utils.data.sampler.SubsetRandomSampler(indices[split:num_train]),
+        valid_data, batch_size=args.batch_size,
+        shuffle=True,
         pin_memory=True, 
         num_workers=args.workers)
 
@@ -151,7 +146,7 @@ def main():
 
     # training
     train_acc, train_obj = train(train_queue, valid_queue, model, architect, criterion, optimizer, lr,epoch)
-    logging.info('train_acc %f', train_acc)
+    logging.info('train_acc %f train_loss %f', train_acc, train_obj)
 
     # validation
     if args.epochs-epoch<=1:

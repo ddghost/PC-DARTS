@@ -94,7 +94,6 @@ def load_checkpoint(save):
   state = torch.load(filename)
   return state
 
-
 def save(model, model_path):
   torch.save(model.state_dict(), model_path)
 

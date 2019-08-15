@@ -25,6 +25,7 @@ parser.add_argument('--batch_size', type=int, default=256, help='batch size')
 parser.add_argument('--learning_rate', type=float, default=0.1, help='init learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
 parser.add_argument('--weight_decay', type=float, default=3e-5, help='weight decay')
+parser.add_argument('--resume_path', type=str, default='', help='re train model')
 parser.add_argument('--report_freq', type=float, default=100, help='report frequency')
 parser.add_argument('--epochs', type=int, default=100, help='num of training epochs')
 parser.add_argument('--init_channels', type=int, default=48, help='num of init channels')
@@ -92,6 +93,13 @@ def main():
     logging.info(genotype)
     print('--------------------------') 
     model = Network(args.init_channels, CLASSES, args.layers, args.auxiliary, genotype)
+    start_epochs = 0
+    if(not args.resume_path == ''):
+        state = utils.load_checkpoint(args.resume_path)
+        print(state)
+        return
+		
+	
     if num_gpus > 1:
         model = nn.DataParallel(model, device_ids)
         model = model.cuda()
@@ -99,6 +107,8 @@ def main():
         model = model.cuda()
     logging.info("param size = %fMB", utils.count_parameters_in_MB(model))
 
+    
+    
     criterion = nn.CrossEntropyLoss()
     criterion = criterion.cuda()
     criterion_smooth = CrossEntropyLabelSmooth(CLASSES, args.label_smooth)
@@ -146,7 +156,7 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, float(args.epochs))
     best_acc_top1 = 0
     best_acc_top5 = 0
-    for epoch in range(args.epochs):
+    for epoch in range(start_epochs, args.epochs):
         if args.lr_scheduler == 'cosine':
             scheduler.step()
             current_lr = scheduler.get_lr()[0]

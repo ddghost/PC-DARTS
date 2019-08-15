@@ -90,6 +90,10 @@ def save_checkpoint(state, is_best, save):
     best_filename = os.path.join(save, 'model_best.pth.tar')
     shutil.copyfile(filename, best_filename)
 
+def load_checkpoint(save):
+  state = torch.load(filename)
+  return state
+
 
 def save(model, model_path):
   torch.save(model.state_dict(), model_path)

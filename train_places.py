@@ -96,7 +96,7 @@ def main():
     start_epochs = 0
     if(not args.resume_path == ''):
         state = utils.load_checkpoint(args.resume_path)
-        print(dir(state))
+        print(state.keys())
         return
 		
 	

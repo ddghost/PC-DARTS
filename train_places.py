@@ -93,13 +93,12 @@ def main():
     logging.info(genotype)
     print('--------------------------') 
     model = Network(args.init_channels, CLASSES, args.layers, args.auxiliary, genotype)
-    start_epochs = 0
+    #start_epochs = 0
     if(not args.resume_path == ''):
         state = utils.load_checkpoint(args.resume_path)
-        print(state.keys())
-        return
-		
-	
+        #start_epochs = state[epoch]
+        model.load_state_dict(state[state_dict])
+
     if num_gpus > 1:
         model = nn.DataParallel(model, device_ids)
         model = model.cuda()
@@ -156,7 +155,7 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, float(args.epochs))
     best_acc_top1 = 0
     best_acc_top5 = 0
-    for epoch in range(start_epochs, args.epochs):
+    for epoch in range(args.epochs):
         if args.lr_scheduler == 'cosine':
             scheduler.step()
             current_lr = scheduler.get_lr()[0]

@@ -94,10 +94,6 @@ def main():
     print('--------------------------') 
     model = Network(args.init_channels, CLASSES, args.layers, args.auxiliary, genotype)
     #start_epochs = 0
-    if(not args.resume_path == ''):
-        state = utils.load_checkpoint(args.resume_path)
-        #start_epochs = state[epoch]
-        model.load_state_dict(state['state_dict'])
 
     if num_gpus > 1:
         model = nn.DataParallel(model, device_ids)
@@ -105,6 +101,10 @@ def main():
     else:
         model = model.cuda()
     logging.info("param size = %fMB", utils.count_parameters_in_MB(model))
+    if(not args.resume_path == ''):
+        state = utils.load_checkpoint(args.resume_path)
+        #start_epochs = state[epoch]
+        model.load_state_dict(state['state_dict'])
 
     
     

@@ -97,7 +97,7 @@ def main():
     if(not args.resume_path == ''):
         state = utils.load_checkpoint(args.resume_path)
         #start_epochs = state[epoch]
-        model.load_state_dict(state[state_dict])
+        model.load_state_dict(state['state_dict'])
 
     if num_gpus > 1:
         model = nn.DataParallel(model, device_ids)

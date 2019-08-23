@@ -94,6 +94,7 @@ def main():
     print('--------------------------') 
     model = Network(args.init_channels, CLASSES, args.layers, args.auxiliary, genotype)
     #start_epochs = 0
+    model.drop_path_prob = 0
     stat(model, (3, 256, 256))
 
 def train(train_queue, model, criterion, optimizer):

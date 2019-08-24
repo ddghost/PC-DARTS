@@ -75,23 +75,7 @@ class CrossEntropyLabelSmooth(nn.Module):
         return loss
 
 def main():
-    if not torch.cuda.is_available():
-        logging.info('No GPU device available')
-        sys.exit(1)
-    np.random.seed(args.seed)
-    cudnn.benchmark = True
-    torch.manual_seed(args.seed)
-    cudnn.enabled=True
-    torch.cuda.manual_seed(args.seed)
-    torch.cuda.set_device(initGpu)
 
-    logging.info("args = %s", args)
-    logging.info("unparsed_args = %s", unparsed)
-    num_gpus = torch.cuda.device_count()   
-    genotype = eval("genotypes.%s" % args.arch)
-    print('---------Genotype---------')
-    logging.info(genotype)
-    print('--------------------------') 
     model = Network(args.init_channels, CLASSES, args.layers, args.auxiliary, genotype)
     #start_epochs = 0
     model.drop_path_prob = 0

@@ -43,18 +43,6 @@ parser.add_argument('--tmp_data_dir', type=str, default='/', help='temp data dir
 parser.add_argument('--note', type=str, default='try', help='note for this run')
 
 
-args, unparsed = parser.parse_known_args()
-
-args.save = '{}eval-{}-{}'.format(args.save, args.note, time.strftime("%Y%m%d-%H%M%S"))
-utils.create_exp_dir(args.save, scripts_to_save=glob.glob('*.py'))
-
-log_format = '%(asctime)s %(message)s'
-logging.basicConfig(stream=sys.stdout, level=logging.INFO,
-    format=log_format, datefmt='%m/%d %I:%M:%S %p')
-fh = logging.FileHandler(os.path.join(args.save, 'log.txt'))
-fh.setFormatter(logging.Formatter(log_format))
-logging.getLogger().addHandler(fh)
-
 CLASSES = 365
 initGpu = 2
 device_ids = [2,3]

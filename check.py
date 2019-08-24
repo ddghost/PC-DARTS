@@ -42,7 +42,7 @@ parser.add_argument('--lr_scheduler', type=str, default='cosine', help='lr sched
 parser.add_argument('--tmp_data_dir', type=str, default='/', help='temp data dir')
 parser.add_argument('--note', type=str, default='try', help='note for this run')
 
-
+args, unparsed = parser.parse_known_args()
 CLASSES = 365
 initGpu = 2
 device_ids = [2,3]

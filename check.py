@@ -95,7 +95,7 @@ def main():
     model = Network(args.init_channels, CLASSES, args.layers, args.auxiliary, genotype)
     #start_epochs = 0
     model.drop_path_prob = 0
-    stat(model, (3, 256, 256))
+    stat(model, (3, 224, 224))
 
 def train(train_queue, model, criterion, optimizer):
     objs = utils.AvgrageMeter()
